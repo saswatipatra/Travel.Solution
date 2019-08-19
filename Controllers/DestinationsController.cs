@@ -17,7 +17,10 @@ namespace Travel.Controllers
         [HttpGet]
         public ActionResult<IEnumerable<Destination>> Get()
         {
-            return _db.Destinations.ToList();
+            
+            return _db.Destinations
+                .Include(destinations => destinations.Reviews)
+                .ToList();
         }
 
         // POST api/destinations

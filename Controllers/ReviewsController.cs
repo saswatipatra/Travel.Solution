@@ -18,7 +18,7 @@ namespace Travel.Controllers
         public ActionResult<IEnumerable<Review>> Get()
         {
             return _db.Reviews
-                .Include(reviews => reviews.Destination)
+                // .Include(review => review.Destination)
                 .ToList();
         }
 
@@ -27,6 +27,10 @@ namespace Travel.Controllers
         public void Post([FromBody] Review review)
         {
             _db.Reviews.Add(review);
+            Console.WriteLine("review added");
+            var thisDestination = _db.Destinations
+                .FirstOrDefault(x => x.DestinationId == review.DestinationId);
+            thisDestination.GetAvgRating();
             _db.SaveChanges();
         }
 
