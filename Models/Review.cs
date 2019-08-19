@@ -8,6 +8,7 @@ namespace Travel.Models
     {
         [Key]
         public int ReviewId { get; set; }
+        public int DestinationId { get; set; }
         public string UserName { get; set; }
         public int Rating { get; set; }
         public string ReviewText { get; set; }

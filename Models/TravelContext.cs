@@ -5,6 +5,7 @@ namespace Travel.Models
     public class TravelContext : DbContext
     {
         public DbSet<Destination> Destinations { get; set; }
+        public DbSet<Review> Reviews { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
             => optionsBuilder
