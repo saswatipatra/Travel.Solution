@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Travel.Models
 {
-    [Table("destinations")]
+    // [Table("destinations")]
     public class Destination
     {
         [Key]

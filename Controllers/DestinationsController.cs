@@ -52,5 +52,12 @@ namespace Travel.Controllers
             _db.Destinations.Remove(thisDestination);
             _db.SaveChanges();
         }
+        
+        // get destination name by country name
+        [HttpGet("country/{country}")]
+        public ActionResult<IEnumerable<Destination>> Get (string country)
+        {
+            return _db.Destinations.Where(x => x.Country == country).ToList();
+        }
     }
 }
