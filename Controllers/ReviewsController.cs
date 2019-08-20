@@ -29,6 +29,7 @@ namespace Travel.Controllers
             _db.Reviews.Add(review);
             Console.WriteLine("review added");
             var thisDestination = _db.Destinations
+                .Include(destination => destination.Reviews)
                 .FirstOrDefault(x => x.DestinationId == review.DestinationId);
             thisDestination.GetAvgRating();
             _db.SaveChanges();
