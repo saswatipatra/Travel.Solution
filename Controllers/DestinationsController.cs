@@ -62,5 +62,12 @@ namespace Travel.Controllers
         {
             return _db.Destinations.Where(x => x.Country == country).ToList();
         }
+
+        // get most popular travel destinations by overall rating 
+        [HttpGet ("popular"), ActionName("Get")]
+        public ActionResult<IEnumerable<Destination>> GetPopular()
+        {
+            return _db.Destinations.Where(x=>x.AvgRating>3).ToList();
+        }
     }
 }
