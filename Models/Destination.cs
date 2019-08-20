@@ -14,14 +14,8 @@ namespace Travel.Models
         public string Country { get; set; }
         public string City { get; set; }
         public double AvgRating { get; set; }
-        // public int RatingSum { get; set; }
         
         public ICollection<Review> Reviews { get; set; }
-
-        // public void UpdateRatingSum()
-        // {
-
-        // }
 
         public void GetAvgRating()
         {
