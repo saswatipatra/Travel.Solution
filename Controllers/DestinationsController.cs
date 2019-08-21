@@ -34,7 +34,9 @@ namespace Travel.Controllers
         [HttpGet("{id}")]
         public ActionResult<Destination> Get(int id)
         {
-            return _db.Destinations.FirstOrDefault(x => x.DestinationId == id);
+            return _db.Destinations
+                .Include(destinations => destinations.Reviews)
+                .FirstOrDefault(x => x.DestinationId == id);
         }
 
         // PUT api/destinations/1
