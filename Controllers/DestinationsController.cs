@@ -49,7 +49,6 @@ namespace Travel.Controllers
             {
                 _page += 1;
             }
-            
             return output;
         }
 
@@ -67,10 +66,9 @@ namespace Travel.Controllers
             {
                 _page -= 1;
             }
-            
             return output;
         }
-        
+
         // POST api/destinations
         [HttpPost]
         public void Post([FromBody] Destination destination)
