@@ -13,22 +13,22 @@ namespace Travel.Controllers
     public class DestinationsController : ControllerBase
     {
         private TravelContext _db = new TravelContext();
-        public static int page = 1;
-        public static int size = 3;
-        public static int count;
-        public static int totalPages;
-        public static int prevPage = page > 1 ? page - 1 : 1;
-        public static int nextPage;
+        private static int page = 1;
+        private static int size = 3;
+        private static int count;
+        private static int totalPages;
+        private static int prevPage;
+        private static int nextPage;
 
         // GET api/destinations
         [HttpGet]
         public ActionResult<IEnumerable<Destination>> Get()
         {
+            Console.WriteLine("PAGE!!!!!!!!!!!!!!!! = " + page);
             var allDestinations = _db.Destinations
                 .ToList();
             count = allDestinations.Count();
-            Console.WriteLine("COUNT!!!!!!!!!!!!!!! " + count);
-
+            totalPages = (int)Math.Ceiling(count / (float)size);
             var output = _db.Destinations
                 .Take(size)
                 .Include(destinations => destinations.Reviews)
@@ -36,23 +36,43 @@ namespace Travel.Controllers
             return output;
         }
 
+        // Get the next page
         [HttpGet("next/")]
         public ActionResult<IEnumerable<Destination>> GetNextPage()
         {
-            totalPages = (int)Math.Ceiling(count / (float)size);
+            Console.WriteLine("PAGE!!!!!!!!!!!!!!!! = " + page);
             nextPage = page < totalPages ? page + 1 : totalPages;
-            Console.WriteLine("TOTALPAGES!!!!!!!!!!!!!!! " + totalPages);
-            Console.WriteLine("NEXTPAGE!!!!!!!!!!!!!!! " + nextPage);
-
             var output= _db.Destinations
                 .Include(destinations => destinations.Reviews)
                 .Skip((nextPage - 1) * size)
                 .Take(size)
                 .ToList();
-            page += 1;
+            if (page<totalPages)
+            {
+                page += 1;
+            }
+            
             return output;
         }
 
+        // Get the previous page
+        [HttpGet("prev/")]
+        public ActionResult<IEnumerable<Destination>> GetPrevPage()
+        {
+            Console.WriteLine("PAGE!!!!!!!!!!!!!!!! = " + page);
+            prevPage = page > 1 ? page - 1 : 1;
+            var output= _db.Destinations
+                .Include(destinations => destinations.Reviews)
+                .Skip((prevPage - 1) * size)
+                .Take(size)
+                .ToList();
+            if (page>1)
+            {
+                page -= 1;
+            }
+            
+            return output;
+        }
         // POST api/destinations
         [HttpPost]
         public void Post([FromBody] Destination destination)
