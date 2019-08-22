@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Travel.Models;
 
+
 namespace Travel.Controllers
 {
     [Route("api/[controller]")]
@@ -12,14 +13,44 @@ namespace Travel.Controllers
     public class DestinationsController : ControllerBase
     {
         private TravelContext _db = new TravelContext();
+        public static int page = 1;
+        public static int size = 3;
+        public static int count;
+        public static int totalPages;
+        public static int prevPage = page > 1 ? page - 1 : 1;
+        public static int nextPage;
 
         // GET api/destinations
         [HttpGet]
         public ActionResult<IEnumerable<Destination>> Get()
         {
-            return _db.Destinations
+            var allDestinations = _db.Destinations
+                .ToList();
+            count = allDestinations.Count();
+            Console.WriteLine("COUNT!!!!!!!!!!!!!!! " + count);
+
+            var output = _db.Destinations
+                .Take(size)
                 .Include(destinations => destinations.Reviews)
                 .ToList();
+            return output;
+        }
+
+        [HttpGet("next/")]
+        public ActionResult<IEnumerable<Destination>> GetNextPage()
+        {
+            totalPages = (int)Math.Ceiling(count / (float)size);
+            nextPage = page < totalPages ? page + 1 : totalPages;
+            Console.WriteLine("TOTALPAGES!!!!!!!!!!!!!!! " + totalPages);
+            Console.WriteLine("NEXTPAGE!!!!!!!!!!!!!!! " + nextPage);
+
+            var output= _db.Destinations
+                .Include(destinations => destinations.Reviews)
+                .Skip((nextPage - 1) * size)
+                .Take(size)
+                .ToList();
+            page += 1;
+            return output;
         }
 
         // POST api/destinations
